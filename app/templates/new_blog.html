@@ -13,7 +13,7 @@
                                 <div class="footer" style="text-align: center; margin-right: 10%; font-size: 20px;">
                                 <span class="foot" >{{blog.comment.count()}} Comments</span> 
     
-                                    <a href="" class="btn btn-primary"> Comment</a>
+                                    <a href="{{url_for('main.comment',blog_id = blog.id)}}" class="btn btn-primary"> Comment</a>
                                 </div>
                         </div>
                             

@@ -6,9 +6,13 @@ from .forms import CreateBLog
 from ..models import User,Blog,Comment
 
 @main.route('/')
-
 def index():
    return render_template('index.html')
+
+@main.route('/home')
+@login_required
+def home():
+   return render_template('home.html')
 
 @main.route('/random_quotes')
 @login_required

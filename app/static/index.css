@@ -6,8 +6,6 @@ body{
   background-image: url(image1.jpg);
   background-repeat: repeat;
   background-size: cover;
-
-
 }
 
 .center{
@@ -61,4 +59,16 @@ p{
 .container h2{
     color: black;
     font-size: xx-large;
+}
+section h2{
+  position:absolute ;
+  top:30%;
+  left: 30%;
+  width:70%;
+  font-size:4em;
+  text-align:center;
+  transform:translate ;
+  color:black;
+  font: bold;
+  transform:translateY (-50%);
 }

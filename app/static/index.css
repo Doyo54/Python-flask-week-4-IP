@@ -49,14 +49,15 @@ body{
   color: black;
   background: none;
 }
-.btns button:first-child:hover{
-  background:black;
-  color: white;
-}
+
 .center .btns button:last-child{
   background: black;
   color: white;
 }
 p{
     font-size: x-large;
+}
+.container h2{
+    color: black;
+    font-size: xx-large;
 }

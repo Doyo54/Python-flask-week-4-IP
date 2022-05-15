@@ -9,6 +9,12 @@ from ..models import User,Blog,Comment
 def index():
    return render_template('index.html')
 
+@main.route('/random_quotes')
+def random():
+   quote = get_quotes()
+   return render_template('random.html',quote = quote)
+
+
 @main.route('/create_new', methods = ['POST','GET'])
 def new_blog():
     form =CreateBLog()
@@ -25,8 +31,7 @@ def new_blog():
 @main.route('/blog')
 def blog():
     blog = Blog.query.all()
-    quote =get_quotes()
-    return render_template('new_blog.html', blog = blog, quote = quote)
+    return render_template('new_blog.html', blog = blog)
 
 
 # @main.route('/comment/<int:pitch_id>', methods = ['POST','GET'])

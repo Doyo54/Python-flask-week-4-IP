@@ -26,6 +26,7 @@ def create_app(config_name):
     app.config.from_object(Config)
     
     app.config['SECRET_KEY'] = '1234'
+    app.config['SQLALCHEMY_DATABASE_URI']= 'postgres://uvwvmkiqhgfubf:abe513190f4f7f07835a812186460cc53c065e6e4ace40ddaf28182a21fc02af@ec2-54-86-224-85.compute-1.amazonaws.com:5432/d7i76dml2jcpeh'
 
 
     from .main import main as main_blueprint

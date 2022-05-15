@@ -2,6 +2,7 @@ from app.request import get_quotes
 from . import main
 from flask import render_template,redirect,url_for
 from .forms import CreateBLog
+from ..models import User,Blog,Comment
 
 @main.route('/')
 def index():
@@ -13,9 +14,14 @@ def index():
 def new_blog():
     form =CreateBLog()
     if form.validate_on_submit():
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.blog'))
         
     return render_template('blog.html', form = form)
+
+@main.route('/blog')
+def blog():
+    blog = Blog.query.all()
+    return render_template('new_blog.html', blog = blog)
 
 
 # @main.route('/comment/<int:pitch_id>', methods = ['POST','GET'])

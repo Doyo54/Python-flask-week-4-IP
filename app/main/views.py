@@ -1,9 +1,10 @@
 from app.request import get_quotes
 from . import main
-from flask import render_template,redirect,url_for
+from flask import render_template,redirect,url_for,abort
 from flask_login import current_user, login_required
-from .forms import CreateBLog
+from .forms import CreateBLog,UpdateProfile
 from ..models import User,Blog,Comment
+from .. import db
 
 @main.route('/')
 def index():
@@ -29,7 +30,7 @@ def new_blog():
         title = form.title.data
         blog = form.blog.data
         name = form.name.data
-        new_pitch_object = Blog(username=name,blog=blog,title=title)
+        new_pitch_object = Blog(username=name,user_id=current_user._get_current_object().id,blog=blog,title=title)
         new_pitch_object.save_p()
         return redirect(url_for('main.blog'))
         
@@ -56,3 +57,29 @@ def blog():
 #         return redirect(url_for('.comment', pitch_id = pitch_id))
 #     return render_template('comment.html', form =form, pitch = pitch,all_comments=all_comments)
 
+@main.route('/user/<uname>')
+def profile(uname):
+    user = User.query.filter_by(username = uname).first()
+
+    if user is None:
+        abort(404)
+
+    return render_template("profile/profile.html", user = user)
+
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
+def update_profile(uname):
+    user = User.query.filter_by(username = uname).first()
+    if user is None:
+        abort(404)
+
+    form = UpdateProfile()
+
+    if form.validate_on_submit():
+        user.bio = form.bio.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('main.profile',uname=user.username))
+
+    return render_template('profile/update.html',form =form)

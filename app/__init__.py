@@ -11,6 +11,7 @@ bootstrap.init_app(app)
 
 
 app.config.from_object(DevConfig)
+app.config['SECRET_KEY'] = '1234'
 
 from .main import main as main_blueprint
 app.register_blueprint(main_blueprint)

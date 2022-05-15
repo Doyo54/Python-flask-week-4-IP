@@ -1,21 +1,24 @@
 from app.request import get_quotes
 from . import main
 from flask import render_template,redirect,url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 from .forms import CreateBLog
 from ..models import User,Blog,Comment
 
 @main.route('/')
+
 def index():
    return render_template('index.html')
 
 @main.route('/random_quotes')
+@login_required
 def random():
    quote = get_quotes()
    return render_template('random.html',quote = quote)
 
 
 @main.route('/create_new', methods = ['POST','GET'])
+@login_required
 def new_blog():
     form =CreateBLog()
     if form.validate_on_submit():
@@ -29,6 +32,7 @@ def new_blog():
     return render_template('blog.html', form = form)
 
 @main.route('/blog')
+@login_required
 def blog():
     blog = Blog.query.all()
     return render_template('new_blog.html', blog = blog)

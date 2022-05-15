@@ -1,6 +1,6 @@
 from app.request import get_quotes
 from . import main
-from flask import render_template,redirect,url_for,abort
+from flask import render_template,redirect,url_for,abort,flash,request
 from flask_login import current_user, login_required
 from .forms import CreateBLog,UpdateProfile,CommentForm
 from ..models import User,Blog,Comment
@@ -41,6 +41,36 @@ def new_blog():
 def blog():
     blog = Blog.query.all()
     return render_template('new_blog.html', blog = blog)
+
+@main.route('/blog/<blog_id>/update', methods = ['GET','POST'])
+@login_required
+def updateblog(blog_id):
+    blog = Blog.query.get(blog_id)
+    if blog.user != current_user:
+        abort(403)
+    form = CreateBLog()
+    if form.validate_on_submit():
+        blog.username = form.name.data
+        blog.title = form.title.data
+        blog.blog = form.blog.data
+        db.session.commit()
+        flash("You have updated your Blog!")
+        return redirect(url_for('main.blog',id = blog.id)) 
+    if request.method == 'GET':
+        form.name.data = blog.username
+        form.title.data = blog.title
+        form.blog.data = blog.blog
+    return render_template('blog.html', form = form)
+
+@main.route('/blog/<blog_id>/delete', methods = ['POST'])
+def delete_post(blog_id):
+    blog = Blog.query.get(blog_id)
+    if blog.user != current_user:
+        abort(403)
+    blog.delete()
+
+    flash("You have deleted your Blog succesfully!")
+    return redirect(url_for('main.blog'))
 
 
 @main.route('/comment/<int:blog_id>', methods = ['POST','GET'])
